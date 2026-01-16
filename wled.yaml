@@ -9,7 +9,8 @@ esp32:
 logger:
 api:
 ota:
-
+  - platform: esphome
+    password: "e8e2543495082c2bcad2c089544e8d5c"
 # ---------- Ethernet ----------
 ethernet:
   type: LAN8720
@@ -20,14 +21,13 @@ ethernet:
 
 # ---------- Smart LED strip on GPIO15 (e.g. WS2812B) ----------
 light:
-  - platform: neopixelbus
-    type: GRB
-    variant: WS2812          # change if you use SK6812, etc.
-    pin: GPIO15
-    num_leds: 5             # <<< SET YOUR REAL LED COUNT
+  - platform: esp32_rmt_led_strip
     name: "Smart LED Strip"
+    pin: GPIO15
+    num_leds: 5
+    rgb_order: GRB
+    chipset: ws2812
 
-  # ---------- Normal RGB strip on GPIO4, GPIO12, GPIO14 ----------
   - platform: rgb
     name: "RGB Strip"
     red: rgb_red
@@ -38,14 +38,17 @@ output:
   - platform: ledc
     pin: GPIO4
     id: rgb_red
+    inverted: True
 
   - platform: ledc
     pin: GPIO12
     id: rgb_green
+    inverted: True
 
   - platform: ledc
     pin: GPIO14
     id: rgb_blue
+    inverted: True
 
 # ---------- IR receiver TSOP38238 on GPIO34 ----------
 remote_receiver:
